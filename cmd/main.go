@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// think about adding uuid to users...
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")

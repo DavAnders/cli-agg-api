@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	// think about adding uuid to users...
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -21,21 +21,23 @@ func main() {
 	dbName := os.Getenv("DB_NAME")
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
-
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s port=%s sslmode=disable", dbUser, dbPassword, dbName, dbPort)
 
 	log.Printf("Server will start at port: %s", dbPort)
 
-	db, err := sql.Open("postgres", connStr)
+	dbConn, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+	defer dbConn.Close()
 
-	err = db.Ping()
+	err = dbConn.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// new instance of generated queries
+	// queries := database.New(dbConn)
 
 	log.Println("Successfully connected to DB")
 }

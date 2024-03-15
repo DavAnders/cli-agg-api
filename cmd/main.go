@@ -9,6 +9,7 @@ import (
 	"github.com/DavAnders/cli-agg-api/internal/config"
 	"github.com/DavAnders/cli-agg-api/internal/database"
 	"github.com/DavAnders/cli-agg-api/internal/handler"
+	"github.com/DavAnders/cli-agg-api/internal/middleware"
 	_ "github.com/lib/pq"
 )
 
@@ -33,12 +34,15 @@ func main() {
 		DB: dbQueries,
 	}
 
-	http.HandleFunc("/articles", apiCfg.HandlerCreateArticle)
-	http.HandleFunc("/articles/query", apiCfg.HandlerListArticleByQuery)
-	http.HandleFunc("/articles/id", apiCfg.HandlerGetArticleByID)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/articles", apiCfg.HandlerCreateArticle)
+	mux.HandleFunc("/articles/query", apiCfg.HandlerListArticleByQuery)
+	mux.HandleFunc("/articles/id", apiCfg.HandlerGetArticleByID)
+
+	wrappedmux := middleware.CorsMiddleware(mux)
 
 	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8080", wrappedmux); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

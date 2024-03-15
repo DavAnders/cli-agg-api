@@ -4,40 +4,39 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
+	"net/http"
 
-	"github.com/joho/godotenv"
+	"github.com/DavAnders/go-blog-api/internal/config"
+	"github.com/DavAnders/go-blog-api/internal/database"
+	"github.com/DavAnders/go-blog-api/internal/handler"
 	_ "github.com/lib/pq"
 )
 
 func main() {
-
-	err := godotenv.Load()
+	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		log.Fatal("Failed to load configuration", err)
 	}
 
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
-	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	connStr := fmt.Sprintf("user=%s password=%s dbname=%s port=%s sslmode=disable", dbUser, dbPassword, dbName, dbPort)
+	connString := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPassword, cfg.DBName)
 
-	log.Printf("Server will start at port: %s", dbPort)
-
-	dbConn, err := sql.Open("postgres", connStr)
+	db, err := sql.Open("postgres", connString)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to open database connection: %v", err)
 	}
-	defer dbConn.Close()
+	defer db.Close()
 
-	err = dbConn.Ping()
-	if err != nil {
-		log.Fatal(err)
+	dbQueries := database.New(db)
+
+	apiCfg := handler.ApiConfig{
+		DB: dbQueries,
 	}
 
-	// new instance of generated queries
-	// queries := database.New(dbConn)
+	http.HandleFunc("/articles", apiCfg.HandlerCreateArticle)
 
-	log.Println("Successfully connected to DB")
+	log.Println("Starting server on :8080")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }

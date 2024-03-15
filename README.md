@@ -1,6 +1,6 @@
 # Go API for Content Aggregator and Analyzer
 
-This Go API is part of a concept setup designed to work alongside a Python CLI tool for aggregating and analyzing content from NewsAPI. The API serves as a backend for storing, retrieving, and managing articles fetched by the CLI tool.
+This Go API is part of a concept setup designed to work alongside a [Python CLI tool](https://github.com/DavAnders/cli-content-agg) for aggregating and analyzing content from NewsAPI. The API serves as a backend for storing, retrieving, and managing articles fetched by the CLI tool.
 
 ## Overview
 

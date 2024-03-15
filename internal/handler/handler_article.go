@@ -18,7 +18,7 @@ type ArticlePayload struct {
 	Title        string     `json:"title"`
 	Url          string     `json:"url"`
 	Content      *string    `json:"content,omitempty"`
-	PublishedAt  *time.Time `json:"published_at,omitempty"`
+	PublishedAt  *time.Time `json:"publishedAt,omitempty"`
 	Polarity     *float64   `json:"polarity,omitempty"`
 	Subjectivity *float64   `json:"subjectivity,omitempty"`
 	Query        *string    `json:"query,omitempty"`

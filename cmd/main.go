@@ -34,6 +34,8 @@ func main() {
 	}
 
 	http.HandleFunc("/articles", apiCfg.HandlerCreateArticle)
+	http.HandleFunc("/articles/query", apiCfg.HandlerListArticleByQuery)
+	http.HandleFunc("/articles/id", apiCfg.HandlerGetArticleByID)
 
 	log.Println("Starting server on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {

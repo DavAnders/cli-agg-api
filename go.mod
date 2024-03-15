@@ -1,4 +1,4 @@
-module github.com/DavAnders/go-blog-api
+module github.com/DavAnders/cli-agg-api
 
 go 1.22.1
 

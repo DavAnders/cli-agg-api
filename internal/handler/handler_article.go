@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/DavAnders/go-blog-api/internal/database"
+	"github.com/DavAnders/cli-agg-api/internal/database"
 )
 
 type ApiConfig struct {

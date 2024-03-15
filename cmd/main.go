@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/DavAnders/go-blog-api/internal/config"
-	"github.com/DavAnders/go-blog-api/internal/database"
-	"github.com/DavAnders/go-blog-api/internal/handler"
+	"github.com/DavAnders/cli-agg-api/internal/config"
+	"github.com/DavAnders/cli-agg-api/internal/database"
+	"github.com/DavAnders/cli-agg-api/internal/handler"
 	_ "github.com/lib/pq"
 )
 
